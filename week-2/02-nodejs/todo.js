@@ -42,12 +42,88 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const z = require("zod");
+const fs = require("fs");
 
 const app = express();
 
 app.use(bodyParser.json());
 
-let todos = [];
+// Easy way
+
+// let todos = [];
+
+// app.post("/todos", (req, res) => {
+//   const todo = z.object({
+//     title: z.string(),
+//     description: z.string(),
+//     completed: z.boolean(),
+//   });
+
+//   const { title, description, completed } = req.body;
+//   const validatedTodo = todo.safeParse(req.body);
+//   if (!validatedTodo) {
+//     return res.status(400).json({ error: "Invalid todo item format" });
+//   }
+//   const newTodo = {
+//     id: todos.length + 1,
+//     title,
+//     description,
+//     completed,
+//   };
+//   todos.push(newTodo);
+//   res.status(201).send(newTodo);
+// });
+
+// app.get("/todos", (req, res) => {
+//   const todo = todos;
+//   // console.log(todo);
+//   if (todos.length > 0) {
+//     return res.status(200).send(todo);
+//   }
+//   return res.status(404).json({
+//     message: "Add a to-do",
+//   });
+// });
+
+// app.get("/todos/:id", (req, res) => {
+//   const id = parseInt(req.params.id);
+//   const todo = todos.find((todo) => parseInt(todo.id) === id);
+//   if (!todo) {
+//     return res.status(404).json({
+//       message: "Todo not found",
+//     });
+//   }
+//   res.status(200).send(todo);
+// });
+
+// app.put("/todos/:id", (req, res) => {
+//   const id = parseInt(req.params.id);
+//   const todo = todos.find((todo) => parseInt(todo.id) === id);
+//   if (!todo) {
+//     return res.status(404).json({ error: "Todo not found" });
+//   }
+//   const updatedTodo = { ...todo, ...req.body };
+//   const index = todos.findIndex((todo) => parseInt(todo.id) === id);
+//   todos[index] = updatedTodo;
+//   res.status(200).send(updatedTodo);
+// });
+
+// app.delete("/todos/:id", (req, res) => {
+//   const id = parseInt(req.params.id);
+//   const todoToDelete = todos.find((todo) => parseInt(todo.id) === id);
+//   console.log(todoToDelete);
+
+//   // console.log(todo);
+//   if (!todoToDelete) {
+//     return res.status(404).json({ error: "Todo not found" });
+//   }
+//   todos = todos.filter((todo) => todo.id !== id);
+//   return res.status(200).json({
+//     message: "Todo deleted",
+//   });
+// });
+
+// Hard way
 
 app.post("/todos", (req, res) => {
   const todo = z.object({
@@ -57,67 +133,26 @@ app.post("/todos", (req, res) => {
   });
 
   const { title, description, completed } = req.body;
-  const validatedTodo = todo.safeParse(req.body);
-  if (!validatedTodo) {
-    return res.status(400).json({ error: "Invalid todo item format" });
-  }
-  const newTodo = {
-    id: todos.length + 1,
-    title,
-    description,
-    completed,
+  const mewTodo = {
+    title: title,
+    description: description,
+    completed: "false",
   };
-  todos.push(newTodo);
-  res.status(201).send(newTodo);
-});
-
-app.get("/todos", (req, res) => {
-  const todo = todos;
-  // console.log(todo);
-  if (todos.length > 0) {
-    return res.status(200).send(todo);
-  }
-  return res.status(404).json({
-    message: "Add a to-do",
+  fs.writeFile("./files/res.txt", mewTodo, (err, data) => {
+    console.log(data);
   });
 });
 
-app.get("/todos/:id", (req, res) => {
-  const id = parseInt(req.params.id);
-  const todo = todos.find((todo) => parseInt(todo.id) === id);
-  if (!todo) {
-    return res.status(404).json({
-      message: "Todo not found",
-    });
-  }
-  res.status(200).send(todo);
-});
+app.get("/todos", (req, res) => {});
+
+app.get("/todos/:id", (req, res) => {});
 
 app.put("/todos/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const todo = todos.find((todo) => parseInt(todo.id) === id);
-  if (!todo) {
-    return res.status(404).json({ error: "Todo not found" });
-  }
-  const updatedTodo = { ...todo, ...req.body };
-  const index = todos.findIndex((todo) => parseInt(todo.id) === id);
-  todos[index] = updatedTodo;
-  res.status(200).send(updatedTodo);
 });
 
 app.delete("/todos/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const todoToDelete = todos.find((todo) => parseInt(todo.id) === id);
-  console.log(todoToDelete);
-
-  // console.log(todo);
-  if (!todoToDelete) {
-    return res.status(404).json({ error: "Todo not found" });
-  }
-  todos = todos.filter((todo) => todo.id !== id);
-  return res.status(200).json({
-    message: "Todo deleted",
-  });
 });
 
 module.exports = app;
