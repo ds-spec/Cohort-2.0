@@ -15,8 +15,7 @@ Personal Insights & Learnings ✍️
 🌍 Follow My Journey
 I’ll be sharing my progress across all social media platforms. You can connect with me here:
 
-📌 Instagram – @th.beautydiaries
-📌 Twitter/X – [Your Twitter Handle]
-📌 LinkedIn – [Your LinkedIn Profile]
+📌 Twitter/X – https://x.com/next_gendev
+📌 LinkedIn – https://www.linkedin.com/in/deepak-sharma-817335152/
 
 Let’s learn & grow together! 🚀✨
